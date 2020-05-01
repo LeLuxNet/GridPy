@@ -1,8 +1,6 @@
 import random
 import time
-from datetime import datetime
 
-import RPi.GPIO as GPIO
 import neopixel
 
 LED_COLUMNS = 10
@@ -17,10 +15,6 @@ LED_DMA = 10
 LED_BRIGHTNESS = 255
 LED_INVERT = False
 LED_CHANNEL = 0
-
-BUTTON_A_PIN = 19
-BUTTON_B_PIN = 7
-BUTTON_COOLDOWN = 150
 
 MSPF = 20
 FPS = 1000 / MSPF
@@ -73,30 +67,6 @@ class Color:
 
     def toString(self):
         return str(self.red) + " " + str(self.green) + " " + str(self.blue)
-
-
-class Button:
-
-    def __init__(self, pin, cooldown):
-        self.pin = pin
-        self.cooldown = cooldown
-        self.lastPress = datetime.now()
-        GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-
-    def once(self):
-        if GPIO.input(self.pin) == GPIO.HIGH:
-            if (datetime.now() - self.lastPress).microseconds < self.cooldown * 1000:
-                return False
-            while True:
-                if GPIO.input(self.pin) == GPIO.LOW:
-                    self.lastPress = datetime.now()
-                    return True
-        return False
-
-    def wait(self):
-        while True:
-            if self.once():
-                return
 
 
 def startSave(name):
@@ -294,22 +264,6 @@ def interpolateBetween(screen1, screen2, s=1):
     return result
 
 
-def button():
-    while True:
-        if buttonA.once():
-            return 0
-        if buttonB.once():
-            return 1
-
-
-def buttonA():
-    buttonA.wait()
-
-
-def buttonB():
-    buttonB.wait()
-
-
 def quit():
     print("Stop matrix")
     clear()
@@ -341,13 +295,6 @@ def clear():
 
 
 def init():
-    GPIO.setmode(GPIO.BOARD)
-
-    global buttonA
-    global buttonB
-    buttonA = Button(BUTTON_A_PIN, BUTTON_COOLDOWN)
-    buttonB = Button(BUTTON_B_PIN, BUTTON_COOLDOWN)
-
     global strip
     strip = neopixel.Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
     strip.begin()
