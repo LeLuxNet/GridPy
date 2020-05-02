@@ -3,24 +3,6 @@ import time
 
 import neopixel
 
-LED_COLUMNS = 10
-LED_ROWS = 10
-
-LED_REVERSED = True  # If every 2. row is in the opposite direction
-
-LED_COUNT = LED_COLUMNS * LED_ROWS
-LED_PIN = 18
-LED_FREQ = 800000  # 800kHz
-LED_DMA = 10
-LED_BRIGHTNESS = 255
-LED_INVERT = False
-LED_CHANNEL = 0
-
-MSPF = 20
-FPS = 1000 / MSPF
-
-SAVE = False
-
 CHARS = {
     "A": [[0, 1, 0], [1, 0, 1], [1, 1, 1], [1, 0, 1], [1, 0, 1]],
     "B": [[1, 1, 0], [1, 0, 1], [1, 1, 0], [1, 0, 1], [1, 1, 0]],
@@ -54,68 +36,10 @@ CHARS = {
     " ": [[0], [0], [0], [0], [0]]
 }
 
-
-class Color:
-
-    def __init__(self, red, green, blue):
-        self.red = red
-        self.green = green
-        self.blue = blue
-
-    def toInt(self):
-        return neopixel.Color(self.green, self.red, self.blue)  # Red and green are switched
-
-    def toString(self):
-        return str(self.red) + " " + str(self.green) + " " + str(self.blue)
-
-
-def startSave(name):
-    print("Start recording")
-    global file
-    file = open("matrix/" + name + ".txt", "w")
-    global SAVE
-    SAVE = True
-
-
-def stopSave():
-    print("Stop recording")
-    global SAVE
-    SAVE = False
-    file.close()
-
-
-def sleep(s):
-    if SAVE:
-        file.write("d" + str(s * 1000) + "\n")
-    time.sleep(s)
-
-
 def sleepMs(ms):
     if SAVE:
         file.write("d" + str(ms) + "\n")
     time.sleep(ms / 1000.0)
-
-
-def isReversedRow(row):
-    return LED_REVERSED and row % 2 == 1
-
-
-def calcRow(i):
-    return i / LED_COLUMNS
-
-
-def calcColumn(i):
-    if isReversedRow(calcRow(i)):
-        return LED_COLUMNS - i % LED_COLUMNS - 1
-    return i % LED_COLUMNS
-
-
-def calcIndex(row, col):
-    if row >= LED_ROWS or col >= LED_COLUMNS or row < 0 or col < 0:
-        return LED_COUNT
-    if isReversedRow(row):
-        return (row + 1) * LED_COLUMNS - col - 1
-    return row * LED_COLUMNS + col
 
 
 def brightnessColor(brightness):
@@ -123,7 +47,6 @@ def brightnessColor(brightness):
 
 
 COLOR_TRANSPARENT = None
-COLOR_BLACK = brightnessColor(0)
 
 BG = COLOR_BLACK
 
@@ -137,32 +60,11 @@ def tBack():
     global BG
     BG = COLOR_TRANSPARENT
 
-
-COLOR_WHITE = brightnessColor(255)
-COLOR_RED = Color(255, 0, 0)
-COLOR_GREEN = Color(0, 255, 0)
-COLOR_BLUE = Color(0, 0, 255)
-
-
-def randomColor():
-    return Color(random.randint(0, 255),
-                 random.randint(0, 255),
-                 random.randint(0, 255))
-
-
 def mask(screen, mask, replace=Color(0, 0, 0)):
     for i in range(len(screen)):
         if not mask(screen, i):
             screen[i] = replace
     return screen
-
-
-def functionScreen(func):
-    result = []
-    for i in range(strip.numPixels()):
-        result.append(func(i))
-    return result
-
 
 def applyScreen(screen):
     global currentScreen
@@ -191,14 +93,6 @@ def rowSnake(screen, back=None):
         frames.append(back[:])
     return frames
 
-
-def oneColorScreen(color=BG):
-    result = []
-    for i in range(strip.numPixels()):
-        result.append(color)
-    return result
-
-
 def pixelScreen(i, color, screen=None):
     if screen == None:
         screen = oneColorScreen(COLOR_BLACK)
@@ -224,17 +118,6 @@ def colorize(map, color=COLOR_WHITE):
                 layer.append(BG)
         colored.append(layer)
     return colored
-
-
-def toScreen(map, x=0, y=0):
-    screen = oneColorScreen()
-    for mx in range(len(map)):
-        for my in range(len(map[mx])):
-            index = calcIndex(x + mx, y + my)
-            if index == LED_COUNT:
-                continue
-            screen[index] = map[mx][my]
-    return screen
 
 
 def runScreens(screens, delay=MSPF):
@@ -288,19 +171,3 @@ def getString(string, color=COLOR_WHITE):
                 map[row].append(val)
         first = False
     return map
-
-
-def clear():
-    applyScreen(oneColorScreen(COLOR_BLACK))
-
-
-def init():
-    global strip
-    strip = neopixel.Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
-    strip.begin()
-    global currentScreen
-    currentScreen = oneColorScreen(COLOR_BLACK)
-    print("FPS: " + str(FPS))
-    print("MsPF: " + str(MSPF))
-    print("")
-    print("Start matrix")
