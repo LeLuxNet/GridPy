@@ -24,10 +24,17 @@ def run():
         pass
     elif view == 1:
         start_app("tictactoe")
+    elif view == 2:
+        start_app("flashlight")
+
+
+def get_app(name):
+    return importlib.import_module("apps." + name).App()
 
 
 def start_app(name):
-    importlib.import_module("apps." + name)
+    led.clear()
+    get_app(name).run()
     next_view()
 
 
@@ -36,9 +43,10 @@ def _drawer():
     next_view(1)
 
 
-def next_view(id=-1):
+def next_view(next_id=-1):
     global view
-    view = id
+    view = next_id
+    print("View:", next_id)
 
 
 _init()

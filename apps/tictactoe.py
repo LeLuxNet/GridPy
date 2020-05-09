@@ -1,6 +1,6 @@
 import time
 
-from lib import led, button
+from lib import led, button, app
 
 
 class Player:
@@ -14,42 +14,6 @@ blue = Player(led.COLOR_BLUE)
 
 nobody = Player(led.COLOR_WHITE)
 
-turn = red
-winner = None
-
-game = [[None, None, None],
-        [None, None, None],
-        [None, None, None]]
-
-selCol = -1
-selRow = -1
-
-
-def render():
-    if winner is None:
-        led.fill_func(_render_ingame)
-        pass
-    else:
-        led.fill(winner.color)
-        time.sleep(1)
-        led.clear()
-        time.sleep(0.5)
-        led.fill(winner.color)
-        time.sleep(3)
-        led.clear()
-
-
-def _render_ingame(cords):
-    x = calc_game_pos(cords.x)
-    y = calc_game_pos(cords.y)
-    if x == -1 or y == -1:
-        return turn.color
-    elif game[x][y] is not None:
-        return game[x][y].color
-    elif selCol == x and (selRow == -1 or selRow == y):
-        return led.COLOR_WHITE
-    return led.COLOR_BLACK
-
 
 def calc_game_pos(val):
     if val <= 2:
@@ -61,74 +25,108 @@ def calc_game_pos(val):
     return -1
 
 
-def get_winner():
-    for y in game:
-        if y[0] == y[1] == y[2]:
-            return y[0]
-    for x in range(3):
-        if game[0][x] == game[1][x] == game[2][x]:
-            return game[0][x]
-    if game[0][0] == game[1][1] == game[2][2]:
-        return game[0][0]
-    if game[0][2] == game[1][1] == game[2][0]:
-        return game[0][2]
-    free = False
-    for y in game:
-        for x in y:
-            if x is None:
-                free = True
-                break
-    if not free:
-        return nobody
-    return None
+class App(app.BaseApp):
 
+    def __init__(self):
+        super(App, self).__init__("TicTacToe")
+        self.turn = red
+        self.winner = None
 
-def next_col():
-    global selCol
-    selCol += 1
-    if selCol > 2:
-        selCol = 0
-    if game[selCol][0] is not None and \
-            game[selCol][1] is not None and \
-            game[selCol][2] is not None:
-        next_col()
+        self.game = [[None, None, None],
+                     [None, None, None],
+                     [None, None, None]]
 
+        self.selCol = -1
+        self.selRow = -1
 
-def next_row():
-    global selRow
-    selRow += 1
-    if selRow > 2:
-        selRow = 0
-    if game[selCol][selRow] is not None:
-        next_row()
+    def render(self):
+        if self.winner is None:
+            led.fill_func(self._render_ingame)
+            pass
+        else:
+            led.fill(self.winner.color)
+            time.sleep(1)
+            led.clear()
+            time.sleep(0.5)
+            led.fill(self.winner.color)
+            time.sleep(3)
+            led.clear()
 
+    def _render_ingame(self, cords):
+        x = calc_game_pos(cords.x)
+        y = calc_game_pos(cords.y)
+        if x == -1 or y == -1:
+            return self.turn.color
+        elif self.game[x][y] is not None:
+            return self.game[x][y].color
+        elif self.selCol == x and (self.selRow == -1 or self.selRow == y):
+            return led.COLOR_WHITE
+        return led.COLOR_BLACK
 
-while winner is None:
-    next_col()
-    render()
-    while button.any_button()[0] == 0:
-        next_col()
-        render()
-    free_count = 0
-    free_pos = -1
-    for y in range(3):
-        if game[selCol][y] is None:
-            free_count += 1
-            free_pos = y
-    if free_count == 1:
-        selRow = free_pos
-    else:
-        next_row()
-        render()
-        while button.any_button()[0] == 0:
-            next_row()
-            render()
-    game[selCol][selRow] = turn
-    selCol = -1
-    selRow = -1
-    if turn == red:
-        turn = blue
-    else:
-        turn = red
-    winner = get_winner()
-render()
+    def get_winner(self):
+        for y in self.game:
+            if y[0] == y[1] == y[2]:
+                return y[0]
+        for x in range(3):
+            if self.game[0][x] == self.game[1][x] == self.game[2][x]:
+                return self.game[0][x]
+        if self.game[0][0] == self.game[1][1] == self.game[2][2]:
+            return self.game[0][0]
+        if self.game[0][2] == self.game[1][1] == self.game[2][0]:
+            return self.game[0][2]
+        free = False
+        for y in self.game:
+            for x in y:
+                if x is None:
+                    free = True
+                    break
+        if not free:
+            return nobody
+        return None
+
+    def next_col(self):
+        self.selCol += 1
+        if self.selCol > 2:
+            self.selCol = 0
+        if self.game[self.selCol][0] is not None and \
+                self.game[self.selCol][1] is not None and \
+                self.game[self.selCol][2] is not None:
+            self.next_col()
+
+    def next_row(self):
+        self.selRow += 1
+        if self.selRow > 2:
+            self.selRow = 0
+        if self.game[self.selCol][self.selRow] is not None:
+            self.next_row()
+
+    def run(self):
+        while self.winner is None:
+            self.next_col()
+            self.render()
+            while button.any_button()[0] == 0:
+                self.next_col()
+                self.render()
+            free_count = 0
+            free_pos = -1
+            for y in range(3):
+                if self.game[self.selCol][y] is None:
+                    free_count += 1
+                    free_pos = y
+            if free_count == 1:
+                self.selRow = free_pos
+            else:
+                self.next_row()
+                self.render()
+                while button.any_button()[0] == 0:
+                    self.next_row()
+                    self.render()
+            self.game[self.selCol][self.selRow] = self.turn
+            self.selCol = -1
+            self.selRow = -1
+            if self.turn == red:
+                self.turn = blue
+            else:
+                self.turn = red
+            self.winner = self.get_winner()
+        self.render()

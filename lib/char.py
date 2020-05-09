@@ -75,7 +75,6 @@ def string(string):
 def gliding_text(text, y=0):
     old_bg = get_bg()
     set_bg(COLOR_BLACK)
-    print(get_bg())
     rendered = string(text)
     for shift in range(len(rendered[0]) - LED_COLUMNS + 1):
         led.draw_screen(rendered, -shift, y)

@@ -1,7 +1,6 @@
 import neopixel
 from PIL import Image
 
-from config import *
 from lib import cords
 from lib.colors import *
 
@@ -48,5 +47,5 @@ def clear():
     fill(COLOR_BLACK)
 
 
-strip = neopixel.Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
+strip = neopixel.Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ, LED_DMA, LED_INVERT, 255, LED_CHANNEL)
 strip.begin()
