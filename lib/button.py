@@ -46,7 +46,7 @@ def cleanup():
     GPIO.cleanup()
 
 
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 
 buttons = []
 buttonA = Button(BUTTON_A_PIN)

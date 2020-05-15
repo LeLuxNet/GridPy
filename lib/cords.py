@@ -23,7 +23,7 @@ def _is_reversed_row(row):
 
 
 def _calc_row(i):
-    return i / LED_COLUMNS
+    return i // LED_COLUMNS
 
 
 def _calc_col(i):

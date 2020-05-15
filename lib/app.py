@@ -1,4 +1,4 @@
-class BaseApp(object):
+class BaseApp:
 
     def __init__(self, name):
         self.name = name

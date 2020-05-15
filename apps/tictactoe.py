@@ -28,7 +28,7 @@ def calc_game_pos(val):
 class App(app.BaseApp):
 
     def __init__(self):
-        super(App, self).__init__("TicTacToe")
+        super().__init__("TicTacToe")
         self.turn = red
         self.winner = None
 
@@ -55,6 +55,7 @@ class App(app.BaseApp):
     def _render_ingame(self, cords):
         x = calc_game_pos(cords.x)
         y = calc_game_pos(cords.y)
+        print("X=" + str(cords.x) + " Y=" + str(cords.y) + " x=" + str(x) + " y=" + str(y))
         if x == -1 or y == -1:
             return self.turn.color
         elif self.game[x][y] is not None:

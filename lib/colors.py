@@ -1,7 +1,5 @@
 import random
 
-import neopixel
-
 from config import *
 
 
@@ -13,10 +11,10 @@ class Color:
         self.blue = blue
         self.brightness = brightness
 
-    def __int__(self):
-        return neopixel.Color(int(self.green * self.brightness),
-                              int(self.red * self.brightness),
-                              int(self.blue * self.brightness))  # Red and green are switched
+    def get(self):
+        return (int(self.red * self.brightness),
+                int(self.green * self.brightness),
+                int(self.blue * self.brightness))
 
 
 COLOR_BLACK = Color(0, 0, 0)

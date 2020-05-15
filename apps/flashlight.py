@@ -5,7 +5,7 @@ from lib.colors import *
 class App(app.BaseApp):
 
     def __init__(self):
-        super(App, self).__init__("Flashlight")
+        super().__init__("Flashlight")
         self.color = COLOR_WHITE
         self.brightness = BRIGHTNESS_NORMAL
 
