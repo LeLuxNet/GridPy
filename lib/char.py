@@ -68,17 +68,23 @@ def string(string, empty_col=False):
             for val in r_char[i]:
                 row.append(val)
         first = False
+    if empty_col:
+        for row in r_word:
+            row.append(get_bg())
     return r_word
 
 
-def gliding_text(text, y=0, fade_out=False):
+def gliding_text(text, y=0, fade_in=False, fade_out=False):
     old_bg = get_bg()
     set_bg(COLOR_BLACK)
-    rendered = string(text)
-    shifts = len(rendered[0]) + 1
+    rendered = string(text, empty_col=True)
+    shifts = len(rendered[0])
+    start = 0
     if not fade_out:
         shifts -= LED_COLUMNS
-    for shift in range(shifts):
+    if fade_in:
+        start = -LED_COLUMNS
+    for shift in range(start, shifts):
         led.draw_screen(rendered, -shift, y)
         time.sleep(TEXT_GLIDING_DELAY / 1000.0)
     set_bg(old_bg)

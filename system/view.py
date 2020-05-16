@@ -2,7 +2,7 @@ import importlib
 
 from lib import led
 
-view = -1
+view = 1
 
 
 def get_app(name):
@@ -15,7 +15,7 @@ def start_app(name):
     get_app(name).run()
 
 
-def next_view(next_id=-1):
+def next_view(next_id=1):
     global view
     view = next_id
     print("View:", next_id)
