@@ -15,7 +15,6 @@ class Button:
         self.vpress = None
 
     def once(self):
-        print("Once", self.pin, self.vpress)
         if self.vpress:
             length = self.vpress
             self.vpress = None
@@ -43,12 +42,14 @@ class Button:
         self.vpress = length
 
 
-def any_button():
+def any_button(throw=False):
     while True:
         for i, button in enumerate(buttons):
             result = button.once()
             if result:
                 print("Button:", i, result)
+                if throw and i == 0 and result == 2:
+                    raise KeyboardInterrupt()
                 return [i, result]
 
 

@@ -1,9 +1,11 @@
+import base64
 import threading
+from io import BytesIO
 
-from flask import Flask
+from flask import Flask, request
 
 from config import *
-from lib import button
+from lib import button, led
 from system import view, main
 
 app = Flask(__name__)
@@ -17,6 +19,7 @@ def get_view():
 @app.route('/view/<int:id>', methods=['POST'])
 def set_view(id):
     view.next_view(id)
+    press_button(0, 2)
     return ""
 
 
@@ -29,6 +32,14 @@ def press_button(id, type):
 @app.route('/quit', methods=['DELETE'])
 def quit():
     main.quit()
+    return ""
+
+
+@app.route('/image', methods=['POST'])
+def show_img():
+    set_view(0)
+    body = request.data
+    led.show_image(BytesIO(base64.b64decode(body)))
     return ""
 
 

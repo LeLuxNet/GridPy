@@ -104,9 +104,12 @@ class App(app.BaseApp):
         while self.winner is None:
             self.next_col()
             self.render()
-            while button.any_button()[0] == 0:
-                self.next_col()
-                self.render()
+            try:
+                while button.any_button(True)[0] == 0:
+                    self.next_col()
+                    self.render()
+            except KeyboardInterrupt:
+                break
             free_count = 0
             free_pos = -1
             for y in range(3):
@@ -118,9 +121,12 @@ class App(app.BaseApp):
             else:
                 self.next_row()
                 self.render()
-                while button.any_button()[0] == 0:
-                    self.next_row()
-                    self.render()
+                try:
+                    while button.any_button(True)[0] == 0:
+                        self.next_row()
+                        self.render()
+                except KeyboardInterrupt:
+                    break
             self.game[self.selCol][self.selRow] = self.turn
             self.selCol = -1
             self.selRow = -1

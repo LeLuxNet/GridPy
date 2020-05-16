@@ -12,10 +12,11 @@ class App(app.BaseApp):
     def run(self):
         while True:
             led.fill(Color(self.color.red, self.color.green, self.color.blue, self.brightness))
-            press = button.any_button()
-            if press == [0, 2]:
+            try:
+                press = button.any_button(throw=True)
+            except KeyboardInterrupt:
                 break
-            elif press[0] == 0:
+            if press[0] == 0:
                 self.next_color()
             elif press[0] == 1:
                 self.next_brightness()

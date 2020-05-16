@@ -1,4 +1,4 @@
-from lib import button, char
+from lib import button, char, led
 from system import view
 
 
@@ -9,7 +9,7 @@ def quit():
 def run():
     if view.current() == -1:
         _drawer()
-    elif view.current() == 0:
+    elif view.current() == -2:
         # Animations
         pass
     elif view.current() == 1:
@@ -19,5 +19,6 @@ def run():
 
 
 def _drawer():
+    led.clear()
     char.gliding_text("GridPy Test", fade_out=True)
     view.next_view(1)

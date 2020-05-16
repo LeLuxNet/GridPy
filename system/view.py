@@ -11,8 +11,8 @@ def get_app(name):
 
 def start_app(name):
     led.clear()
-    get_app(name).run()
     next_view()
+    get_app(name).run()
 
 
 def next_view(next_id=-1):

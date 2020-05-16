@@ -57,7 +57,7 @@ def char(c):
         return _colorize(CHARS[c.upper()])
 
 
-def string(string):
+def string(string, empty_col=False):
     first = True
     r_word = [[], [], [], [], []]
     for raw_char in string:

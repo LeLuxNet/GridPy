@@ -6,6 +6,7 @@ from lib.colors import *
 
 def fill(color):
     strip.fill(color.get())
+    strip.show()
 
 
 def fill_func(func):
@@ -33,7 +34,10 @@ def show_image(path):
     img = Image.open(path)
     img = img.resize((LED_COLUMNS, LED_ROWS), Image.NEAREST)
     background = Image.new("RGB", img.size, (0, 0, 0))
-    background.paste(img, mask=img.split()[3])
+    mask = None
+    if img.split() == 4:
+        mask = img.split()[3]
+    background.paste(img, mask=mask)
     for i, pixel in enumerate(background.getdata()):
         pos = cords.Cords(i % LED_COLUMNS, i // LED_COLUMNS)
         draw_pixel(pos, Color(pixel[0], pixel[1], pixel[2]))
