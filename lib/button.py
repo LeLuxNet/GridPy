@@ -12,8 +12,14 @@ class Button:
         self.last_press = datetime.datetime.now()
         GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         buttons.append(self)
+        self.vpress = None
 
     def once(self):
+        print("Once", self.pin, self.vpress)
+        if self.vpress:
+            length = self.vpress
+            self.vpress = None
+            return length
         if GPIO.input(self.pin) == GPIO.HIGH:
             if (datetime.datetime.now() - self.last_press).microseconds < BUTTON_COOLDOWN * 1000:
                 return False
@@ -33,12 +39,16 @@ class Button:
             if result:
                 return result
 
+    def press(self, length=1):
+        self.vpress = length
+
 
 def any_button():
     while True:
-        for i in range(len(buttons)):
-            result = buttons[i].once()
+        for i, button in enumerate(buttons):
+            result = button.once()
             if result:
+                print("Button:", i, result)
                 return [i, result]
 
 
@@ -46,8 +56,12 @@ def cleanup():
     GPIO.cleanup()
 
 
-GPIO.setmode(GPIO.BCM)
+def init():
+    GPIO.setmode(GPIO.BCM)
 
-buttons = []
-buttonA = Button(BUTTON_A_PIN)
-buttonB = Button(BUTTON_B_PIN)
+    global buttons
+    global button_a
+    global button_b
+    buttons = []
+    button_a = Button(BUTTON_A_PIN)
+    button_b = Button(BUTTON_B_PIN)

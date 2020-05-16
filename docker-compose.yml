@@ -3,3 +3,5 @@ services:
   gridpy:
     build: .
     privileged: true
+    ports:
+      - 80:80

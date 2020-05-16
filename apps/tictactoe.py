@@ -55,7 +55,6 @@ class App(app.BaseApp):
     def _render_ingame(self, cords):
         x = calc_game_pos(cords.x)
         y = calc_game_pos(cords.y)
-        print("X=" + str(cords.x) + " Y=" + str(cords.y) + " x=" + str(x) + " y=" + str(y))
         if x == -1 or y == -1:
             return self.turn.color
         elif self.game[x][y] is not None:

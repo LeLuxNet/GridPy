@@ -1,6 +1,5 @@
 import time
 
-from config import *
 from lib import led
 from lib.colors import *
 
@@ -72,11 +71,14 @@ def string(string):
     return r_word
 
 
-def gliding_text(text, y=0):
+def gliding_text(text, y=0, fade_out=False):
     old_bg = get_bg()
     set_bg(COLOR_BLACK)
     rendered = string(text)
-    for shift in range(len(rendered[0]) - LED_COLUMNS + 1):
+    shifts = len(rendered[0]) + 1
+    if not fade_out:
+        shifts -= LED_COLUMNS
+    for shift in range(shifts):
         led.draw_screen(rendered, -shift, y)
         time.sleep(TEXT_GLIDING_DELAY / 1000.0)
     set_bg(old_bg)

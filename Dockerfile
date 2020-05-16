@@ -12,4 +12,4 @@ RUN pip install -r requirements.txt
 WORKDIR /usr/src/app
 COPY . ./
 
-CMD ["python", "system/system.py"]
+CMD ["python", "system/init.py"]
