@@ -17,6 +17,12 @@ class Cords:
             return (self.y + 1) * LED_COLUMNS - self.x - 1
         return self.y * LED_COLUMNS + self.x
 
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+
+    def __repr__(self):
+        return str(self.x) + "X " + str(self.y) + "Y"
+
 
 def _is_reversed_row(row):
     return LED_REVERSED and row % 2 == 1

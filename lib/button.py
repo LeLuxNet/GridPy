@@ -2,6 +2,7 @@ import datetime
 
 import RPi.GPIO as GPIO
 
+from utils import time
 from config import *
 
 
@@ -20,7 +21,7 @@ class Button:
             self.vpress = None
             return length
         if GPIO.input(self.pin) == GPIO.HIGH:
-            if (datetime.datetime.now() - self.last_press).microseconds < BUTTON_COOLDOWN * 1000:
+            if time.to_ms(datetime.datetime.now() - self.last_press) < BUTTON_COOLDOWN:
                 return False
             down_time = datetime.datetime.now()
             while True:
@@ -42,15 +43,21 @@ class Button:
         self.vpress = length
 
 
-def any_button(throw=False):
+def any_button(throw=True):
     while True:
-        for i, button in enumerate(buttons):
-            result = button.once()
-            if result:
-                print("Button:", i, result)
-                if throw and i == 0 and result == 2:
-                    raise KeyboardInterrupt()
-                return [i, result]
+        press = any_button(throw)
+        if press:
+            return press
+
+
+def any_button_once(throw=True):
+    for i, button in enumerate(buttons):
+        result = button.once()
+        if result:
+            print("Button:", i, result)
+            if throw and i == 0 and result == 2:
+                raise KeyboardInterrupt()
+            return [i, result]
 
 
 def cleanup():

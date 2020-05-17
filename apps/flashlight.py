@@ -13,7 +13,7 @@ class App(app.BaseApp):
         while True:
             led.fill(Color(self.color.red, self.color.green, self.color.blue, self.brightness))
             try:
-                press = button.any_button(True)
+                press = button.any_button()
             except KeyboardInterrupt:
                 break
             if press[0] == 0:

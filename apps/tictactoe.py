@@ -105,7 +105,7 @@ class App(app.BaseApp):
             self.next_col()
             self.render()
             try:
-                while button.any_button(True)[0] == 0:
+                while button.any_button()[0] == 0:
                     self.next_col()
                     self.render()
             except KeyboardInterrupt:
@@ -122,7 +122,7 @@ class App(app.BaseApp):
                 self.next_row()
                 self.render()
                 try:
-                    while button.any_button(True)[0] == 0:
+                    while button.any_button()[0] == 0:
                         self.next_row()
                         self.render()
                 except KeyboardInterrupt:
