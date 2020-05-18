@@ -33,11 +33,11 @@ class App(app.BaseApp):
 
     def __init__(self):
         super().__init__("Snake")
-        middleY = LED_ROWS // 2
+        middle = LED_ROWS // 2
         self.snake = [
-            cords.Cords(3, middleY),
-            cords.Cords(2, middleY),
-            cords.Cords(1, middleY)
+            cords.Cords(3, middle),
+            cords.Cords(2, middle),
+            cords.Cords(1, middle)
         ]
         self.food = None
         self.gen_food()

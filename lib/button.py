@@ -45,7 +45,7 @@ class Button:
 
 def any_button(throw=True):
     while True:
-        press = any_button(throw)
+        press = any_button_once(throw)
         if press:
             return press
 

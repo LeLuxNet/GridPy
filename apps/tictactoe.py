@@ -42,7 +42,6 @@ class App(app.BaseApp):
     def render(self):
         if self.winner is None:
             led.fill_func(self._render_ingame)
-            pass
         else:
             led.fill(self.winner.color)
             time.sleep(1)
