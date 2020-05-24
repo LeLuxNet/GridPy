@@ -6,6 +6,7 @@ class App(app.BaseApp):
 
     def __init__(self):
         super().__init__("Drawer")
+        self.viewed = 0
 
     def run(self):
-        view.next_view(3)
+        pass

@@ -1,29 +1,26 @@
 from PIL import Image
 
+from hardware import led_lib
 from lib import cords
 from lib.colors import *
 
 DISPLAY_PIXELS = []
 for i in range(LED_COUNT):
-    if cords.from_index(i).visible():
-        DISPLAY_PIXELS.append(i)
+    cord = cords.from_index(i)
+    if cord.visible():
+        DISPLAY_PIXELS.append(cord)
 
 
 def fill(color):
     for i in DISPLAY_PIXELS:
-        draw_pixel(i, color)
-    strip.show()
+        led_lib.set_pixel(i, color)
+    led_lib.show()
 
 
 def fill_func(func):
     for i in DISPLAY_PIXELS:
-        draw_pixel(i, func(cords.from_index(i)))
-    strip.show()
-
-
-def draw_pixel(pos, color):
-    if color is not None:
-        strip[int(pos)] = color.get()
+        led_lib.set_pixel(i, func(i))
+    led_lib.show()
 
 
 def draw_screen(screen, move_x=0, move_y=0):
@@ -32,8 +29,8 @@ def draw_screen(screen, move_x=0, move_y=0):
             cord = cords.Cords(x + move_x, y + move_y)
             if not cord.visible():
                 continue
-            draw_pixel(cord, screen[y][x])
-    strip.show()
+            led_lib.set_pixel(cord, screen[y][x])
+    led_lib.show()
 
 
 def show_image(path):
@@ -46,12 +43,9 @@ def show_image(path):
     background.paste(img, mask=mask)
     for i, pixel in enumerate(background.getdata()):
         pos = cords.Cords(i % DISPLAY_COLUMNS, i // DISPLAY_COLUMNS)
-        draw_pixel(pos, Color(pixel[0], pixel[1], pixel[2]))
-    strip.show()
+        led_lib.set_pixel(pos, Color(pixel[0], pixel[1], pixel[2]))
+    led_lib.show()
 
 
 def clear():
     fill(COLOR_BLACK)
-
-
-strip = neopixel.NeoPixel(LED_PIN, LED_COUNT, auto_write=False, pixel_order=LED_PIXEL_ORDER)

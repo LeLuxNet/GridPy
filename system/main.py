@@ -1,4 +1,3 @@
-from lib import button
 from system import view
 
 apps = ["drawer",  # 1

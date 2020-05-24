@@ -1,9 +1,8 @@
 import datetime
 
-import RPi.GPIO as GPIO
-
-from utils import time
 from config import *
+from hardware import button_lib
+from utils import time
 
 
 class Button:
@@ -11,8 +10,9 @@ class Button:
     def __init__(self, pin):
         self.pin = pin
         self.last_press = datetime.datetime.now()
-        GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        button_lib.setup(pin)
         buttons.append(self)
+        self.id = len(buttons) - 1
         self.vpress = None
 
     def once(self):
@@ -20,12 +20,12 @@ class Button:
             length = self.vpress
             self.vpress = None
             return length
-        if GPIO.input(self.pin) == GPIO.HIGH:
+        if button_lib.pressed(self):
             if time.to_ms(datetime.datetime.now() - self.last_press) < BUTTON_COOLDOWN:
                 return False
             down_time = datetime.datetime.now()
             while True:
-                if GPIO.input(self.pin) == GPIO.LOW:
+                if not button_lib.pressed(self):
                     self.last_press = datetime.datetime.now()
                     if (self.last_press - down_time).microseconds > BUTTON_LONG_PRESS * 1000:
                         return 2
@@ -60,13 +60,7 @@ def any_button_once(throw=True):
             return [i, result]
 
 
-def cleanup():
-    GPIO.cleanup()
-
-
 def init():
-    GPIO.setmode(GPIO.BCM)
-
     global buttons
     global button_a
     global button_b
