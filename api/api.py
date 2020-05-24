@@ -43,6 +43,12 @@ def show_img():
     return ""
 
 
+@app.after_request
+def apply_caching(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
+
+
 def run():
     thread = threading.Thread(target=_start)
     thread.daemon = True

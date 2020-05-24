@@ -1,4 +1,4 @@
-from lib import app
+from lib import app, led
 
 
 class App(app.BaseApp):
@@ -7,5 +7,4 @@ class App(app.BaseApp):
         super().__init__("Animations")
 
     def run(self):
-        # Do something here
-        pass
+        led.clear()

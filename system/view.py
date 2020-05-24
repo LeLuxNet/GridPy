@@ -1,7 +1,5 @@
 import importlib
 
-from lib import led
-
 view = 1
 
 
@@ -10,7 +8,6 @@ def get_app(name):
 
 
 def start_app(name):
-    led.clear()
     next_view()
     get_app(name).run()
 

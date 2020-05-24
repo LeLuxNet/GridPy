@@ -26,6 +26,8 @@ COLOR_RED = Color(255, 0, 0)
 COLOR_GREEN = Color(0, 255, 0)
 COLOR_BLUE = Color(0, 0, 255)
 
+COLOR_YELLOW = Color(255, 255, 0)
+
 BRIGHTNESS_NONE = 1
 
 BG = None

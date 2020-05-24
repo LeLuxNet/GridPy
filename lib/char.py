@@ -81,9 +81,9 @@ def gliding_text(text, y=0, fade_in=False, fade_out=False):
     shifts = len(rendered[0])
     start = 0
     if not fade_out:
-        shifts -= LED_COLUMNS
+        shifts -= DISPLAY_COLUMNS
     if fade_in:
-        start = -LED_COLUMNS
+        start = -DISPLAY_COLUMNS
     for shift in range(start, shifts):
         led.draw_screen(rendered, -shift, y)
         time.sleep(TEXT_GLIDING_DELAY / 1000.0)

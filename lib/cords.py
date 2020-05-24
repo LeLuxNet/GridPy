@@ -8,7 +8,7 @@ class Cords:
         self.y = y
 
     def visible(self):
-        return LED_ROWS > self.y >= 0 and LED_COLUMNS > self.x >= 0
+        return DISPLAY_ROWS > self.y >= 0 and DISPLAY_COLUMNS > self.x >= 0
 
     def __int__(self):
         if not self.visible():

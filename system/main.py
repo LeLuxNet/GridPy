@@ -1,11 +1,13 @@
 from lib import button
 from system import view
 
-apps = ["drawer", "animations", "tictactoe", "snake", "connectfour", "flashlight"]
-
-
-def quit():
-    button.cleanup()
+apps = ["drawer",  # 1
+        "animations",  # 2
+        "tictactoe",  # 3
+        "connectfour",  # 4
+        "snake",  # 5
+        "flashlight",  # 6
+        "test_card"]  # 7
 
 
 def run():

@@ -3,14 +3,20 @@ from PIL import Image
 from lib import cords
 from lib.colors import *
 
+DISPLAY_PIXELS = []
+for i in range(LED_COUNT):
+    if cords.from_index(i).visible():
+        DISPLAY_PIXELS.append(i)
+
 
 def fill(color):
-    strip.fill(color.get())
+    for i in DISPLAY_PIXELS:
+        draw_pixel(i, color)
     strip.show()
 
 
 def fill_func(func):
-    for i in range(len(strip)):
+    for i in DISPLAY_PIXELS:
         draw_pixel(i, func(cords.from_index(i)))
     strip.show()
 
@@ -32,14 +38,14 @@ def draw_screen(screen, move_x=0, move_y=0):
 
 def show_image(path):
     img = Image.open(path)
-    img = img.resize((LED_COLUMNS, LED_ROWS), Image.NEAREST)
+    img = img.resize((DISPLAY_COLUMNS, DISPLAY_ROWS), Image.NEAREST)
     background = Image.new("RGB", img.size, (0, 0, 0))
     mask = None
     if img.split() == 4:
         mask = img.split()[3]
     background.paste(img, mask=mask)
     for i, pixel in enumerate(background.getdata()):
-        pos = cords.Cords(i % LED_COLUMNS, i // LED_COLUMNS)
+        pos = cords.Cords(i % DISPLAY_COLUMNS, i // DISPLAY_COLUMNS)
         draw_pixel(pos, Color(pixel[0], pixel[1], pixel[2]))
     strip.show()
 

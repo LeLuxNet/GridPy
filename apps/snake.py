@@ -33,7 +33,7 @@ class App(app.BaseApp):
 
     def __init__(self):
         super().__init__("Snake")
-        middle = LED_ROWS // 2
+        middle = DISPLAY_ROWS // 2
         self.snake = [
             cords.Cords(3, middle),
             cords.Cords(2, middle),
@@ -62,7 +62,7 @@ class App(app.BaseApp):
                     self.direction = self.direction.right
             old_head = self.snake[0]
             head = cords.Cords(old_head.x + self.direction.x, old_head.y + self.direction.y)
-            if 0 > head.x or LED_COLUMNS <= head.x or 0 > head.y or LED_ROWS <= head.y:
+            if 0 > head.x or DISPLAY_COLUMNS <= head.x or 0 > head.y or DISPLAY_ROWS <= head.y:
                 break
             self.snake.insert(0, head)
             if head != self.food:
@@ -73,7 +73,7 @@ class App(app.BaseApp):
         time.sleep(3)
 
     def gen_food(self):
-        food = cords.Cords(random.randint(0, LED_COLUMNS - 1), random.randint(0, LED_ROWS - 1))
+        food = cords.Cords(random.randint(0, DISPLAY_COLUMNS - 1), random.randint(0, DISPLAY_ROWS - 1))
         if food in self.snake:
             self.gen_food()
         else:
