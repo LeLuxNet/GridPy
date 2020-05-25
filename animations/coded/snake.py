@@ -3,9 +3,10 @@ from lib import led, cords
 from utils.time import *
 
 
-def snake(color, horizontal=True):
+def snake(gen, horizontal=True):
     rows = DISPLAY_ROWS if horizontal else DISPLAY_COLUMNS
     cols = DISPLAY_COLUMNS if horizontal else DISPLAY_ROWS
+    color = gen.generate()
     for raw_y in range(rows):
         for raw_x in range(cols):
             y = raw_y

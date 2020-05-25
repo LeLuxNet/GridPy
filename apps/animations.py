@@ -1,6 +1,9 @@
-import animations
-from lib import app, colors, button
+from animations import coded
+from animations.color import random
+from lib import app, button
 from utils import time
+
+GEN = random
 
 
 class App(app.BaseApp):
@@ -10,20 +13,23 @@ class App(app.BaseApp):
         self.detector = button.QuitDetector()
 
     def run(self):
+        self.detector.start()
         try:
-            self.detector.start()
-
-            animations.diagonal_random()
-            self.detector.check()
-
-            time.sleep(1)
-            self.detector.check()
-
-            for i in range(5):
-                animations.snake(colors.random_color(), i % 2 == 0)
+            while True:
+                coded.spiral_zoom(GEN, 10)
                 self.detector.check()
 
-            animations.pixel_glitter_random()
-            self.detector.check()
+                coded.diagonal(GEN)
+                self.detector.check()
+
+                time.sleep(1)
+                self.detector.check()
+
+                for i in range(3):
+                    coded.snake(GEN, i % 2 == 0)
+                    self.detector.check()
+
+                coded.pixel_glitter(GEN)
+                self.detector.check()
         except KeyboardInterrupt:
             return

@@ -1,4 +1,5 @@
-RPi.Gpio
-rpi_ws281x
 Pillow
 Flask
+
+RPi.Gpio
+rpi_ws281x
