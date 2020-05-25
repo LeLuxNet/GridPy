@@ -1,4 +1,5 @@
 import datetime
+from threading import Thread
 
 from config import *
 from hardware import button_lib
@@ -67,3 +68,23 @@ def init():
     buttons = []
     button_a = Button(BUTTON_A_PIN)
     button_b = Button(BUTTON_B_PIN)
+
+
+class QuitDetector(Thread):
+
+    def __init__(self, throw=True):
+        super().__init__()
+        self.stop = False
+        self.throw = throw
+
+    def run(self):
+        try:
+            while True:
+                any_button(True)
+        except KeyboardInterrupt:
+            self.stop = True
+
+    def check(self):
+        if self.throw and self.stop:
+            raise KeyboardInterrupt
+        return self.stop

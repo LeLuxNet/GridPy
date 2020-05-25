@@ -3,8 +3,14 @@ import pygame
 from hardware import base
 from lib.colors import *
 
-WIDTH = 500
-HEIGHT = int(WIDTH / LED_COLUMNS * LED_ROWS)
+MAX_SIZE = 500
+
+if LED_COLUMNS > LED_ROWS:
+    WIDTH = MAX_SIZE
+    HEIGHT = int(WIDTH / LED_COLUMNS * LED_ROWS)
+else:
+    HEIGHT = MAX_SIZE
+    WIDTH = int(HEIGHT / LED_ROWS * LED_COLUMNS)
 
 PIXEL_WIDTH = WIDTH / LED_COLUMNS
 PIXEL_HEIGHT = HEIGHT / LED_ROWS
@@ -16,10 +22,13 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 class LedLib(base.LedLib):
 
     def set_pixel(self, pos, color):
-        rect = pygame.Rect((PIXEL_WIDTH * pos.x, PIXEL_HEIGHT * pos.y), (PIXEL_HEIGHT, PIXEL_WIDTH))
+        pygame.event.pump()
+        rect = pygame.Rect((PIXEL_WIDTH * pos.x, PIXEL_HEIGHT * pos.y),
+                           (PIXEL_HEIGHT + 1, PIXEL_WIDTH + 1))
         pygame.draw.rect(screen, color.get(), rect)
 
     def show(self):
+        pygame.event.pump()
         pygame.display.update()
 
 

@@ -13,8 +13,8 @@ def init():
     print("Init")
     led.show_image("assets/logo.png")
 
-    #signal.signal(signal.SIGINT, _on_signal)
-    #signal.signal(signal.SIGTERM, _on_signal)
+    signal.signal(signal.SIGINT, _on_signal)
+    signal.signal(signal.SIGTERM, _on_signal)
 
     button.init()
     api.run()

@@ -13,7 +13,7 @@ class App(app.BaseApp):
         led.clear()
         while True:
             app = view.get_app(main.apps[self.sel])
-            char.gliding_text(app.name, LED_ROWS - 5, fade_out=True, fade_in=True)
+            char.gliding_text(app.name, DISPLAY_ROWS - 5, fade_out=True, fade_in=True)
             press = button.any_button(False)
             if press[0] == 0:
                 self.sel += 1

@@ -23,6 +23,12 @@ def fill_func(func):
     led_lib.show()
 
 
+def singe_pixel(color, *pos):
+    for p in pos:
+        led_lib.set_pixel(p, color)
+    led_lib.show()
+
+
 def draw_screen(screen, move_x=0, move_y=0):
     for y in range(len(screen)):
         for x in range(len(screen[y])):
