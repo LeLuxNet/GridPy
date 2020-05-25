@@ -1,7 +1,10 @@
-FROM balenalib/raspberry-pi-python:3.8
+FROM balenalib/raspberry-pi-alpine-python:3.8
 
-RUN apt-get update \
- && apt-get install gcc make libjpeg-dev zlib1g-dev
+RUN apk update \
+ && apk add gcc musl-dev make libjpeg-turbo-dev zlib-dev
+
+WORKDIR /app
+ENV PYTHONPATH "${PYTHONPATH}:/app"
 
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt

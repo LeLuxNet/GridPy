@@ -19,6 +19,11 @@ class Player:
         self.color = color
         self.light_color = light_color if light_color is not None else color
 
+    def __eq__(self, other):
+        if self is None or other is None:
+            return False
+        return self.color == other.color
+
 
 red = Player(led.COLOR_RED, led.Color(255, 20, 20))
 blue = Player(led.COLOR_BLUE, led.Color(10, 30, 255))
@@ -45,9 +50,8 @@ class GridGame(BaseApp):
         self.winner = None
 
     def run(self):
-        self.render()
         while self.winner is None:
-            if self.sel_col != -2:
+            if self.sel_col == -1:
                 self.next_col()
                 self.render()
                 try:
@@ -56,7 +60,7 @@ class GridGame(BaseApp):
                         self.render()
                 except KeyboardInterrupt:
                     break
-            if self.sel_row != -2:
+            if self.sel_row == -1:
                 self.next_row()
                 self.render()
                 try:
@@ -98,35 +102,56 @@ class GridGame(BaseApp):
 
     def get_winner(self):
         free = False
-        for x in self.game:
-            player = None
-            count = 0
-            for y in x:
-                if y is None:
+        for y in self.game:
+            for x in y:
+                if x is not None:
                     free = True
-                    continue
-                if player == y:
-                    count += 1
-                else:
-                    player = y
-                    count = 1
-                if count == self.line_len:
-                    return player
         if not free:
             return nobody
-        for y in range(self.height):
-            player = None
-            count = 0
-            for x in range(self.width):
+
+        # on x axis
+        for x in range(self.width - self.line_len + 1):
+            for y in range(self.height):
                 if self.game[x][y] is None:
                     continue
-                if player == self.game[x][y]:
-                    count += 1
+                for i in range(1, self.line_len):
+                    if self.game[x][y] != self.game[x + i][y]:
+                        break
                 else:
-                    player = self.game[x][y]
-                    count = 1
-                if count == self.line_len:
-                    return player
+                    return self.game[x][y]
+
+        # on y axis
+        for x in range(self.width):
+            for y in range(self.height - self.line_len + 1):
+                if self.game[x][y] is None:
+                    continue
+                for i in range(1, self.line_len):
+                    if self.game[x][y] != self.game[x][y + i]:
+                        break
+                else:
+                    return self.game[x][y]
+
+        # on / diagonal
+        for x in range(self.width - self.line_len + 1):
+            for y in range(self.line_len - 1, self.height):
+                if self.game[x][y] is None:
+                    continue
+                for i in range(1, self.line_len):
+                    if self.game[x][y] != self.game[x + i][y - i]:
+                        break
+                else:
+                    return self.game[x][y]
+
+        # on \ diagonal
+        for x in range(self.width - self.line_len + 1):
+            for y in range(self.height - self.line_len + 1):
+                if self.game[x][y] is None:
+                    continue
+                for i in range(1, self.line_len):
+                    if self.game[x][y] != self.game[x + i][y + i]:
+                        break
+                else:
+                    return self.game[x][y]
         return None
 
     def next_col(self):

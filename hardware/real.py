@@ -18,6 +18,7 @@ class LedLib(base.LedLib):
 
     def __init__(self):
         self.strip = rpi_ws281x.PixelStrip(LED_COUNT, LED_PIN, strip_type=types[LED_TYPE])
+        self.strip.begin()
 
     def set_pixel(self, pos, color):
         self.strip.setPixelColor(int(pos), rpi_ws281x.Color(*color.get()))
