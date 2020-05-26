@@ -41,14 +41,17 @@ def spiral(gen, time=50):
 def zoom(gen, steps):
     length = _calc_amount() + steps
     cols = color.ListGenerator(gen.generate_list(length))
-    for i in range(length):
+    for i in range(steps):
         cols.index = i
         spiral(cols, 0)
         sleep(1)
 
 
-def spiral_zoom(gen, steps):
+def spiral_zoom(gen, steps, replay_first=True):
+    if replay_first:
+        steps += 1
     col = gen.generate_list(_calc_amount() + steps)
     spiral(color.ListGenerator(col), 50)
-    col.pop()
+    if not replay_first:
+        col.pop(1)
     zoom(color.ListGenerator(col), steps)

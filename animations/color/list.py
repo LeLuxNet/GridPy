@@ -1,15 +1,11 @@
 from animations.color import base
 
 
-class ListGenerator(base.ColorGeneration):
+class ListGenerator(base.IndexColorGeneration):
 
     def __init__(self, colors):
+        super().__init__(len(colors))
         self.colors = colors
-        self.index = 0
 
-    def generate(self):
-        color = self.colors[self.index]
-        self.index += 1
-        if self.index >= len(self.colors):
-            self.index = 0
-        return color
+    def generate_index(self, index):
+        return self.colors[index]

@@ -1,6 +1,6 @@
 import importlib
 
-view = 1
+view = 2
 
 
 def get_app(name):

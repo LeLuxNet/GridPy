@@ -2,6 +2,21 @@ import random
 
 from config import *
 
+MIRROR_NONE = 0
+MIRROR_X = 1
+MIRROR_Y = 2
+MIRROR_XY = 3
+
+TOP_LEFT = 4
+BOTTOM_LEFT = 5
+TOP_RIGHT = 6
+BOTTOM_RIGHT = 7
+
+TOP = 8
+LEFT = 9
+RIGHT = 10
+BOTTOM = 11
+
 
 class Cords:
 
@@ -27,6 +42,18 @@ class Cords:
 
     def flip(self):
         (self.x, self.y) = (self.y, self.x)
+
+    def mirror_y(self):
+        self.x = DISPLAY_COLUMNS - self.x - 1
+
+    def mirror_x(self):
+        self.y = DISPLAY_ROWS - self.y - 1
+
+    def mirror(self, method):
+        if method == MIRROR_X or method == MIRROR_XY:
+            self.mirror_x()
+        if method == MIRROR_Y or method == MIRROR_XY:
+            self.mirror_y()
 
 
 def _is_reversed_row(row):

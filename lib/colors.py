@@ -1,3 +1,4 @@
+import colorsys
 import random
 
 from config import *
@@ -5,16 +6,30 @@ from config import *
 
 class Color:
 
-    def __init__(self, red, green, blue, brightness=BRIGHTNESS_NORMAL):
-        self.red = red
-        self.green = green
-        self.blue = blue
+    def __init__(self, red, green, blue, brightness=BRIGHTNESS_NORMAL, decimal=False):
+        self.red = _from_dec(red, decimal)
+        self.green = _from_dec(green, decimal)
+        self.blue = _from_dec(blue, decimal)
         self.brightness = brightness
 
     def get(self):
         return (int(self.red * self.brightness),
                 int(self.green * self.brightness),
                 int(self.blue * self.brightness))
+
+
+def _from_dec(val, decimal):
+    if decimal:
+        return int(val * 255)
+    return val
+
+
+def rgb(r, g, b):
+    return Color(r, g, b)
+
+
+def hsv(h, s, v):
+    return Color(*colorsys.hsv_to_rgb(h, s, v), decimal=True)
 
 
 COLOR_BLACK = Color(0, 0, 0)

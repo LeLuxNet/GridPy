@@ -1,4 +1,5 @@
 from .list import ListGenerator
-from .random import RandomGeneration
+from .rainbow import RainbowGeneration
+from .random import RandomGeneration, DifferentRandomGeneration
 
 random = RandomGeneration()
