@@ -7,15 +7,31 @@ from config import *
 class Color:
 
     def __init__(self, red, green, blue, brightness=BRIGHTNESS_NORMAL, decimal=False):
-        self.red = _from_dec(red, decimal)
-        self.green = _from_dec(green, decimal)
-        self.blue = _from_dec(blue, decimal)
+        self._red = _from_dec(red, decimal)
+        self._green = _from_dec(green, decimal)
+        self._blue = _from_dec(blue, decimal)
         self.brightness = brightness
 
     def get(self):
-        return (int(self.red * self.brightness),
-                int(self.green * self.brightness),
-                int(self.blue * self.brightness))
+        return self.red, self._green, self._blue
+
+    @property
+    def red(self):
+        return int(self._red * self.brightness)
+
+    @property
+    def green(self):
+        return int(self._green * self.brightness)
+
+    @property
+    def blue(self):
+        return int(self._blue * self.brightness)
+
+    def __str__(self):
+        return '#%02X%02X%02X' % (self.red, self.green, self.blue)
+
+    def __repr__(self):
+        return str(self)
 
 
 def _from_dec(val, decimal):

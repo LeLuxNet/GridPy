@@ -3,7 +3,6 @@ import time
 import traceback
 from time import sleep
 
-import api
 from hardware import button_lib
 from lib import led, button
 from system import main
@@ -17,6 +16,8 @@ def init():
     signal.signal(signal.SIGTERM, _on_signal)
 
     button.init()
+
+    import api
     api.run()
 
     sleep(2)
@@ -24,7 +25,7 @@ def init():
     led.clear()
 
 
-def _on_signal(signum, frame):
+def _on_signal(_, __):
     stop()
 
 
@@ -34,12 +35,13 @@ def stop():
     led.clear()
 
 
-init()
-try:
-    while True:
-        main.run()
-except:
-    print(traceback.format_exc())
-    led.fill_func(lambda cord: led.COLOR_RED if cord.y % 2 == 0 else led.COLOR_YELLOW)
-    time.sleep(5)
-    stop()
+if __name__ == "__main__":
+    init()
+    try:
+        while True:
+            main.run()
+    except:
+        print(traceback.format_exc())
+        led.fill_func(lambda cord: led.COLOR_RED if cord.y % 2 == 0 else led.COLOR_YELLOW)
+        time.sleep(5)
+        stop()

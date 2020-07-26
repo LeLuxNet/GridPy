@@ -13,5 +13,5 @@ def snake(gen, horizontal=True):
             x = raw_x if y % 2 == 0 else cols - raw_x - 1
             if not horizontal:
                 (x, y) = (y, x)
-            led.singe_pixel(color, cords.Cords(x, y))
+            led.pixel(color, cords.Cords(x, y))
             sleep_ms(50)

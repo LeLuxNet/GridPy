@@ -2,6 +2,7 @@ import pygame
 
 from hardware import base
 from lib.colors import *
+from utils.time import sleep_ms
 
 MAX_SIZE = 500
 
@@ -28,6 +29,7 @@ class LedLib(base.LedLib):
         pygame.draw.rect(screen, color.get(), rect)
 
     def show(self):
+        sleep_ms(10)
         pygame.event.pump()
         pygame.display.update()
 

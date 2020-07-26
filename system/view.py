@@ -15,7 +15,7 @@ def start_app(name):
 def next_view(next_id=1):
     global view
     view = next_id
-    print("View:", next_id)
+    print("View:", view)
 
 
 def current():

@@ -10,7 +10,10 @@ apps = ["drawer",  # 1
 
 
 def run():
-    while view.current() == 0:
-        pass
+    if view.current() == 0:
+        view.next_view(-1)
+        while view.current() == -1:
+            pass
+        return
     selected = apps[view.current() - 1]
     view.start_app(selected)

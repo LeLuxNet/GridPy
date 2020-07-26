@@ -23,9 +23,16 @@ def fill_func(func):
     led_lib.show()
 
 
-def singe_pixel(color, *pos):
-    for p in pos:
-        led_lib.set_pixel(p, color)
+def _pixel(color, pos):
+    led_lib.set_pixel(pos, color)
+
+
+def pixel(color, pos):
+    led_lib.set_pixel(pos, color)
+    led_lib.show()
+
+
+def _show():
     led_lib.show()
 
 

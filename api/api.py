@@ -1,12 +1,12 @@
 import base64
 import threading
 from io import BytesIO
-
-from flask import Flask, request
+from urllib.request import urlopen
 
 from config import *
-from lib import button, led
-from system import view, main
+from flask import Flask, request
+from lib import button, led, char
+from system import view, init
 
 app = Flask(__name__)
 
@@ -23,6 +23,13 @@ def set_view(id):
     return ""
 
 
+def free_view():
+    view.next_view(0)
+    press_button(0, 2)
+    while view.current() != -1:
+        pass
+
+
 @app.route('/button/<int:id>/<int:type>', methods=['POST'])
 def press_button(id, type):
     button.buttons[id].press(type)
@@ -31,15 +38,27 @@ def press_button(id, type):
 
 @app.route('/quit', methods=['DELETE'])
 def quit():
-    main.quit()
+    init.stop()
     return ""
 
 
 @app.route('/image', methods=['POST'])
 def show_img():
-    set_view(0)
+    free_view()
     body = request.data
-    led.show_image(BytesIO(base64.b64decode(body)))
+    body_str = request.data.decode("utf-8")
+    if body_str.startswith("https://"):
+        led.show_image(urlopen(body_str))
+    else:
+        led.show_image(BytesIO(base64.b64decode(body)))
+    return ""
+
+
+@app.route('/text', methods=['POST'])
+def show_text():
+    free_view()
+    led.clear()
+    char.gliding_text(request.data.decode("utf-8"), (DISPLAY_ROWS - 5) // 2, fade_in=True, fade_out=True)
     return ""
 
 

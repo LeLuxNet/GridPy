@@ -61,13 +61,12 @@ def any_button_once(throw=True):
             return [i, result]
 
 
+buttons = []
+
+
 def init():
-    global buttons
-    global button_a
-    global button_b
-    buttons = []
-    button_a = Button(BUTTON_A_PIN)
-    button_b = Button(BUTTON_B_PIN)
+    Button(BUTTON_A_PIN)
+    Button(BUTTON_B_PIN)
 
 
 class QuitDetector(Thread):
