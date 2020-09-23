@@ -1,6 +1,7 @@
 import pygame
 
 from hardware import base
+from lib import cords
 from lib.colors import *
 from utils.time import sleep_ms
 
@@ -22,7 +23,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 class LedLib(base.LedLib):
 
-    def set_pixel(self, pos, color):
+    def set_pixel(self, pos: cords.Cords, color: Color):
         pygame.event.pump()
         rect = pygame.Rect((PIXEL_WIDTH * pos.x, PIXEL_HEIGHT * pos.y),
                            (PIXEL_HEIGHT + 1, PIXEL_WIDTH + 1))

@@ -20,7 +20,7 @@ BOTTOM = 11
 
 class Cords:
 
-    def __init__(self, x, y):
+    def __init__(self, x: int, y: int):
         self.x = x
         self.y = y
 
@@ -35,7 +35,7 @@ class Cords:
         return self.x == other.x and self.y == other.y
 
     def __repr__(self):
-        return str(self.x) + "X " + str(self.y) + "Y"
+        return "(" + str(self.x) + "|" + str(self.y) + ")"
 
     def visible(self):
         return DISPLAY_ROWS > self.y >= 0 and DISPLAY_COLUMNS > self.x >= 0
@@ -54,6 +54,9 @@ class Cords:
             self.mirror_x()
         if method == MIRROR_Y or method == MIRROR_XY:
             self.mirror_y()
+
+    def clone(self):
+        return Cords(self.x, self.y)
 
 
 def _is_reversed_row(row):

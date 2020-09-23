@@ -6,7 +6,7 @@ from lib import led, button
 
 class BaseApp:
 
-    def __init__(self, name):
+    def __init__(self, name: str):
         self.name = name
 
     def run(self):
@@ -31,18 +31,24 @@ blue = Player(led.COLOR_BLUE, led.Color(10, 30, 255))
 nobody = Player(led.COLOR_WHITE)
 
 
+def generate_line(length):
+    return [None for _ in range(length)]
+
+
+def generate_grid(width, height):
+    res = []
+    for x in range(width):
+        res.append(generate_line(height))
+    return res
+
+
 class GridGame(BaseApp):
 
     def __init__(self, name, line_len, width, height, sel_col=True, sel_row=True):
         super().__init__(name)
         self.width = width
         self.height = height
-        self.game = []
-        for x in range(width):
-            col = []
-            for y in range(height):
-                col.append(None)
-            self.game.append(col)
+        self.game = generate_grid(width, height)
         self.sel_col = -1 if sel_col else -2
         self.sel_row = -1 if sel_row else -2
         self.line_len = line_len

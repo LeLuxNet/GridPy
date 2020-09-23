@@ -5,8 +5,9 @@ apps = ["drawer",  # 1
         "tictactoe",  # 3
         "connectfour",  # 4
         "snake",  # 5
-        "flashlight",  # 6
-        "test_card"]  # 7
+        "tetris",  # 6
+        "flashlight",  # 7
+        "test_card"]  # 8
 
 
 def run():

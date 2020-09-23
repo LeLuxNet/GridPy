@@ -1,5 +1,6 @@
-from PIL import Image
+from typing import Callable
 
+from PIL import Image
 from hardware import led_lib
 from lib import cords
 from lib.colors import *
@@ -17,7 +18,7 @@ def fill(color):
     led_lib.show()
 
 
-def fill_func(func):
+def fill_func(func: Callable[[cords.Cords], Color]):
     for i in DISPLAY_PIXELS:
         led_lib.set_pixel(i, func(i))
     led_lib.show()

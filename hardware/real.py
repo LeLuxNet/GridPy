@@ -3,6 +3,8 @@ import rpi_ws281x
 
 from config import *
 from hardware import base
+from lib import cords
+from lib.colors import Color
 
 types = {
     "RGB": rpi_ws281x.ws.WS2811_STRIP_RGB,
@@ -20,7 +22,7 @@ class LedLib(base.LedLib):
         self.strip = rpi_ws281x.PixelStrip(LED_COUNT, LED_PIN, strip_type=types[LED_TYPE])
         self.strip.begin()
 
-    def set_pixel(self, pos, color):
+    def set_pixel(self, pos: cords.Cords, color: Color):
         self.strip.setPixelColor(int(pos), rpi_ws281x.Color(*color.get()))
 
     def show(self):

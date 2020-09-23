@@ -1,18 +1,19 @@
 import colorsys
 import random
+from typing import Tuple
 
 from config import *
 
 
 class Color:
 
-    def __init__(self, red, green, blue, brightness=BRIGHTNESS_NORMAL, decimal=False):
+    def __init__(self, red: int, green: int, blue: int, brightness=BRIGHTNESS_NORMAL, decimal: bool = False):
         self._red = _from_dec(red, decimal)
         self._green = _from_dec(green, decimal)
         self._blue = _from_dec(blue, decimal)
         self.brightness = brightness
 
-    def get(self):
+    def get(self) -> Tuple[int, int, int]:
         return self.red, self._green, self._blue
 
     @property
@@ -40,11 +41,11 @@ def _from_dec(val, decimal):
     return val
 
 
-def rgb(r, g, b):
+def rgb(r, g, b) -> Color:
     return Color(r, g, b)
 
 
-def hsv(h, s, v):
+def hsv(h, s, v) -> Color:
     return Color(*colorsys.hsv_to_rgb(h, s, v), decimal=True)
 
 
@@ -58,6 +59,10 @@ COLOR_GREEN = Color(0, 255, 0)
 COLOR_BLUE = Color(0, 0, 255)
 
 COLOR_YELLOW = Color(255, 255, 0)
+COLOR_CYAN = Color(0, 255, 255)
+COLOR_MAGENTA = Color(255, 0, 255)
+
+COLOR_ORANGE = Color(255, 165, 0)
 
 BRIGHTNESS_NONE = 1
 
@@ -65,7 +70,7 @@ BG = None
 FG = COLOR_WHITE
 
 
-def random_color():
+def random_color() -> Color:
     return Color(random.randint(0, 255),
                  random.randint(0, 255),
                  random.randint(0, 255))
